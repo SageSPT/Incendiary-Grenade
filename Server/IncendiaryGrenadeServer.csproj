@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <AssemblyName>IncendiaryGrenade</AssemblyName>
+    <RootNamespace>IncendiaryGrenadeServer</RootNamespace>
+    <Version>1.0.0</Version>
+    <DebugType>none</DebugType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+
+    <SPTPath>H:\SPT 4.1</SPTPath>
+    <RuntimePath>$(SPTPath)\SPT_Runtime</RuntimePath>
+    <ModDir>$(RuntimePath)\user\mods\IncendiaryGrenade\</ModDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="SPTarkov.Server.Core"><HintPath>$(RuntimePath)\SPTarkov.Server.Core.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="SPTarkov.DI"><HintPath>$(RuntimePath)\SPTarkov.DI.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="SPTarkov.Common"><HintPath>$(RuntimePath)\SPTarkov.Common.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="SemanticVersioning"><HintPath>$(RuntimePath)\SemanticVersioning.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="FX\**" />
+    <None Remove="FX\**" />
+  </ItemGroup>
+
+  <Target Name="DeployToSPT" AfterTargets="Build" Condition="Exists('$(RuntimePath)\user\mods')">
+    <ItemGroup>
+      <BundleFiles Include="bundles\**\*.bundle" />
+    </ItemGroup>
+    <MakeDir Directories="$(ModDir)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ModDir)" />
+    <Copy SourceFiles="bundles.json" DestinationFolder="$(ModDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(BundleFiles)" DestinationFiles="@(BundleFiles->'$(ModDir)bundles\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    <Message Importance="high" Text="IncendiaryGrenade -> $(ModDir)" />
+  </Target>
+
+</Project>

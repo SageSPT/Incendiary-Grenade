@@ -1,0 +1,6 @@
+.vs/
+bin/
+obj/
+UnityTools/
+Server/bundles/
+Server/FX/

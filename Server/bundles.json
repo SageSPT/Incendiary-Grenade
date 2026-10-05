@@ -1,0 +1,26 @@
+{
+  "manifest": [
+    {
+      "key": "assets/content/weapons/saga6/weapon_grenade_saga6_container.bundle",
+      "dependencyKeys": [
+        "shaders",
+        "cubemaps",
+        "assets/content/weapons/additional_hands/client_assets.bundle",
+        "assets/content/weapons/animations/simple_animations.bundle",
+        "assets/content/weapons/animations/spirit_animations.bundle",
+        "assets/content/weapons/rgd5/client_assets.bundle",
+        "assets/content/weapons/weapon_root_anim_fix.bundle"
+      ]
+    },
+    {
+      "key": "assets/content/weapons/saga6/incendiary_fx.bundle",
+      "dependencyKeys": [
+        "shaders"
+      ]
+    },
+    {
+      "key": "assets/content/weapons/saga6/incendiary_audio.bundle",
+      "dependencyKeys": []
+    }
+  ]
+}
