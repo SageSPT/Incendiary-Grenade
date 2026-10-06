@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using SPTarkov.Common.Models.Logging;
@@ -18,7 +20,8 @@ namespace IncendiaryGrenadeServer;
 public class Saga6Server(
     ISptLogger<Saga6Server> logger,
     CustomItemService customItemService,
-    TradersTable traders) : IOnLoad
+    TradersTable traders,
+    LocationTable locations) : IOnLoad
 {
     private const string ItemId      = "6aabad0ff49370bbdc709173";
     private const string RgnId       = "617fd91e5539a84ec44ce155";
@@ -34,6 +37,9 @@ public class Saga6Server(
     private const int    PraporLoyalty   = 2;
     private const int    StockPerRestock = 10;
     private const int    BuyLimit        = 5;
+
+    private const double CrateSpawnShare = 0.06;
+    private static readonly string[] GrenadeCrateIds = { "5909d36d86f774660f0bb900", "67adf4eb110ba15da90c6413" };
 
     public Task OnLoadAsync(CancellationToken cancellationToken)
     {
@@ -86,7 +92,35 @@ public class Saga6Server(
         }
 
         AddToPrapor();
+        AddToGrenadeCrates();
         return Task.CompletedTask;
+    }
+
+    private void AddToGrenadeCrates()
+    {
+        foreach (Location location in locations.GetDictionary().Values)
+        {
+            location.StaticLoot?.AddTransformer(staticLoot =>
+            {
+                if (staticLoot == null) return staticLoot;
+
+                foreach (string crateId in GrenadeCrateIds)
+                {
+                    if (!staticLoot.TryGetValue(crateId, out StaticLootDetails? crate) || crate.ItemDistribution == null) continue;
+                    if (crate.ItemDistribution.Any(d => d.Tpl == ItemId)) continue;
+
+                    double total = crate.ItemDistribution.Sum(d => d.RelativeProbability ?? 0f);
+                    if (total <= 0) continue;
+
+                    float weight = (float)Math.Max(1, Math.Round(total * CrateSpawnShare / (1 - CrateSpawnShare)));
+                    crate.ItemDistribution = crate.ItemDistribution
+                        .Append(new ItemDistribution { Tpl = ItemId, RelativeProbability = weight })
+                        .ToList();
+                }
+
+                return staticLoot;
+            });
+        }
     }
 
     private void AddToPrapor()

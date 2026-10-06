@@ -87,7 +87,7 @@
   <Target Name="DeployToSPT" AfterTargets="Build"
           Condition="'$(DeployToSPT)' == 'true' AND Exists('$(BepInExPath)\plugins')">
     <PropertyGroup>
-      <DeployDir>$(BepInExPath)\plugins\Sage\IncendiaryGrenade\</DeployDir>
+      <DeployDir>$(BepInExPath)\plugins\IncendiaryGrenade\</DeployDir>
     </PropertyGroup>
     <MakeDir Directories="$(DeployDir)" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(DeployDir)" ContinueOnError="true" />
