@@ -11,7 +11,7 @@ using UnityEngine;
 namespace IncendiaryGrenade;
 
 [BepInDependency(BigBrainGuid, BepInDependency.DependencyFlags.SoftDependency)]
-[BepInPlugin("com.sage.incendiarygrenade", "Incendiary Grenade", "1.0.0")]
+[BepInPlugin("com.sage.incendiarygrenade", "Incendiary Grenade", "1.0.1")]
 public class IncendiaryPlugin : BaseUnityPlugin
 {
     private const string BigBrainGuid = "xyz.drakia.bigbrain";
