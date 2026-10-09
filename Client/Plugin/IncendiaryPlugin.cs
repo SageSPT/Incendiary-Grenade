@@ -11,7 +11,7 @@ using UnityEngine;
 namespace IncendiaryGrenade;
 
 [BepInDependency(BigBrainGuid, BepInDependency.DependencyFlags.SoftDependency)]
-[BepInPlugin("com.sage.incendiarygrenade", "Incendiary Grenade", "1.0.1")]
+[BepInPlugin("com.sage.incendiarygrenade", "Incendiary Grenade", "1.0.2")]
 public class IncendiaryPlugin : BaseUnityPlugin
 {
     private const string BigBrainGuid = "xyz.drakia.bigbrain";
@@ -34,6 +34,8 @@ public class IncendiaryPlugin : BaseUnityPlugin
             Application.Quit();
             return;
         }
+
+        IncendiaryConfig.Bind(Config);
 
         new Patch_Grenade_InvokeBlowUpEvent().Enable();
         new Patch_Grenade_Explosion().Enable();

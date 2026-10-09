@@ -1,3 +1,5 @@
+using BepInEx.Configuration;
+
 namespace IncendiaryGrenade;
 
 internal static class IncendiaryConfig
@@ -22,4 +24,17 @@ internal static class IncendiaryConfig
     public const float BurnVolume = 1.0f;
     public const int IgnitionMaxDistance = 100;
     public const int BurnMaxDistance = 100;
+
+    public static ConfigEntry<float> SoundVolume { get; private set; }
+
+    public static void Bind(ConfigFile config)
+    {
+        SoundVolume = config.Bind(
+            "Audio",
+            "Fire Sound Volume",
+            1.0f,
+            new ConfigDescription(
+                "Volume of the incendiary grenade's ignition, burning and extinguish sounds.",
+                new AcceptableValueRange<float>(0f, 1f)));
+    }
 }
